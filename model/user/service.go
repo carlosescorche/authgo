@@ -50,3 +50,7 @@ func Insert(user *User) error {
 
 	return nil
 }
+
+func Get(userID string) (*User, error) {
+	return findByID(userID)
+}

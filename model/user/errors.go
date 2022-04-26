@@ -2,6 +2,7 @@ package user
 
 import "errors"
 
+var ErrUserId error = errors.New("user id invalid")
 var ErrUserNotFound error = errors.New("user not found")
 var ErrUserExist error = errors.New("user the username is registered")
 var ErrUserEmailExist error = errors.New("user the email is registered")

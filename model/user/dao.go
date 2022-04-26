@@ -2,9 +2,11 @@ package user
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/carlosescorche/authgo/utils/db"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -66,6 +68,26 @@ func findByLogin(login string) (*User, error) {
 	err = collection.FindOne(context.Background(), filter).Decode(user)
 
 	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func findByID(userID string) (*User, error) {
+	var collection, err = dbCollection()
+	if err != nil {
+		return nil, err
+	}
+
+	_id, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %v", ErrUserId, err)
+	}
+
+	user := &User{}
+	filter := bson.M{"_id": _id}
+	if err = collection.FindOne(context.Background(), filter).Decode(user); err != nil {
 		return nil, err
 	}
 

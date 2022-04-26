@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/carlosescorche/authgo/utils/errors"
 )
@@ -23,6 +24,19 @@ type ErrorInfo struct {
 	Code    string
 	Message interface{}
 	Extra   interface{}
+}
+
+func GetTokenString(r *http.Request) string {
+	var tokenString string
+
+	authValue := r.Header.Get("Authorization")
+	split := strings.Split(authValue, "Bearer ")
+
+	if len(split) > 1 {
+		tokenString = split[1]
+	}
+
+	return tokenString
 }
 
 func Error(w http.ResponseWriter, err error, code int) {

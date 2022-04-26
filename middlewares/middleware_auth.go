@@ -12,12 +12,16 @@ import (
 
 func MiddlewareAuth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var tokenString string
+
 		authValue := r.Header.Get("Authorization")
 		split := strings.Split(authValue, "Bearer ")
-		tokenString := split[1]
+
+		if len(split) > 1 {
+			tokenString = split[1]
+		}
 
 		_, err := token.Validate(tokenString)
-
 		if err != nil {
 			switch {
 			case errors.Is(err, token.ErrTokenUnauthorized):

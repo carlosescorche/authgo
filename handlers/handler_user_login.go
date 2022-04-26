@@ -35,11 +35,11 @@ func HandlerUserLogin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		switch {
 		case errors.Is(err, user.ErrUserNotFound):
-			err := map[string][]string{"Login": {"The username or email is invalid"}}
+			err := map[string][]string{"login": {"The username or email is invalid"}}
 			api.Error(w, e.NewPayloadError(err), http.StatusBadRequest)
 			return
 		case errors.Is(err, user.ErrUserInvalidPassword):
-			err := map[string][]string{"Password": {"The password is invalid"}}
+			err := map[string][]string{"password": {"The password is invalid"}}
 			api.Error(w, e.NewPayloadError(err), http.StatusBadRequest)
 			return
 		default:
