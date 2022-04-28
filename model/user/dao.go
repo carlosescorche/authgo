@@ -57,6 +57,20 @@ func insert(user *User) (*User, error) {
 	return user, nil
 }
 
+func update(user *User) error {
+	var collection, err = dbCollection()
+	if err != nil {
+		return err
+	}
+
+	filter := bson.M{"_id": user.ID}
+	if _, err := collection.UpdateOne(context.Background(), filter, bson.M{"$set": user}); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func findByLogin(login string) (*User, error) {
 	var collection, err = dbCollection()
 	if err != nil {

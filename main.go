@@ -24,14 +24,11 @@ func main() {
 
 	r.HandleFunc("/user/login", handlers.HandlerUserLogin).Methods("POST")
 	r.HandleFunc("/user", handlers.HandlerUserAdd).Methods("POST")
-	//r.HandleFunc("/verify", handlers.HandlerUserVerify).Methods("PUT")
 
 	current := r.PathPrefix("/user/current").Subrouter()
 	current.Use(middlewares.MiddlewareAuth)
 	current.HandleFunc("", handlers.HandlerUserGet).Methods("GET")
-	//r.HandleFunc("/", handlers.HandlerUserUpdate).Methods("PUT")
-	//r.HandleFunc("/password", handlers.HandlerUserUpdatePassword).Methods("PUT")
-	//r.HandleFunc("/logout", handlers.HandlerUserUpdate).Methods("PUT")
+	current.HandleFunc("", handlers.HandlerUserUpdate).Methods("PUT")
 
 	err := http.ListenAndServe(os.Getenv("port"), r)
 

@@ -51,6 +51,27 @@ func Insert(user *User) error {
 	return nil
 }
 
+func Update(user *User) error {
+	err := user.ValidateSchema()
+	if err != nil {
+		return fmt.Errorf("%w: %v", ErrUserInvalid, err)
+	}
+
+	err = update(user)
+	if err != nil {
+		switch {
+		case mongo.IsDuplicateKeyError(err) && strings.Contains(err.Error(), "username_1"):
+			return fmt.Errorf("%w: %v", ErrUserExist, err)
+		case mongo.IsDuplicateKeyError(err) && strings.Contains(err.Error(), "email_1"):
+			return fmt.Errorf("%w: %v", ErrUserEmailExist, err)
+		default:
+			return fmt.Errorf("%w: %v", ErrUserInternal, err)
+		}
+	}
+
+	return nil
+}
+
 func Get(userID string) (*User, error) {
 	return findByID(userID)
 }

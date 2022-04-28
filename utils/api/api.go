@@ -9,8 +9,8 @@ import (
 )
 
 type HTTPResponseEnvelope struct {
-	HTTPStatus int         `json:"httpStatus"`
-	Data       interface{} `json:"data"`
+	Status int         `json:"status"`
+	Data   interface{} `json:"data"`
 }
 
 type HTTPResponseError struct {
@@ -62,8 +62,8 @@ func Success(w http.ResponseWriter, response interface{}, code int) {
 	w.WriteHeader(code)
 
 	envelope := HTTPResponseEnvelope{
-		HTTPStatus: code,
-		Data:       response,
+		Status: code,
+		Data:   response,
 	}
 
 	json.NewEncoder(w).Encode(envelope)
