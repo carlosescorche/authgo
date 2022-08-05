@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -8,16 +9,7 @@ import (
 	"github.com/carlosescorche/authgo/handlers"
 	"github.com/carlosescorche/authgo/middlewares"
 	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 )
-
-func init() {
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-}
 
 func main() {
 	r := mux.NewRouter()
@@ -35,4 +27,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	fmt.Println("Conectado al puerto ", os.Getenv("port"))
 }
